@@ -1,0 +1,9 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =7
+let g:netrw_dirhist_1='/root/.vim'
+let g:netrw_dirhist_2='/home/git/bom/lib/BOM/LDAP/ConnectionPolicy'
+let g:netrw_dirhist_3='/home/git/bom/lib/BOM/LDAP/Staff'
+let g:netrw_dirhist_4='/home/git/bom/config/controls'
+let g:netrw_dirhist_5='/home/git/bom/config/files/development'
+let g:netrw_dirhist_6='/home/farzad/Downloads/ZenPacks/sodonnell/MACReport/skins/ZenPacks.sodonnell.MACReport'
+let g:netrw_dirhist_7='/home/farzad/tmp/python-mitmproxy'
