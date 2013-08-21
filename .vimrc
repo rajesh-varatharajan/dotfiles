@@ -1,82 +1,80 @@
-version 7.0
-
 """ Vundle Entries
-" NOTE: comments after Bundle command are not allowed..
 set nocompatible               " be iMproved
 filetype off                   " required!
 
 set runtimepath+=~/.vim/bundle/vundle/
 call vundle#rc()
 
+" Bundles here:
+"
+" shortnames come from http://github.com
+" long names could include a git repo URL
+"
+" Run :BundleInstall! to install/update bundles
+"
 " let Vundle manage Vundle
 " required! 
 Bundle 'gmarik/vundle'
 
-" My Bundles here:
-"
-" original repos on github
 Bundle 'tpope/vim-fugitive'
 Bundle 'c9s/perlomni.vim'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'mileszs/ack.vim'
+Bundle 'cakebaker/scss-syntax.vim'
+Bundle 'airblade/vim-gitgutter'
+
+" YouCompeleteMe requires vim 7.3+
+" Bundle 'Valloric/YouCompleteMe'
+
 Bundle 'kien/ctrlp.vim'
   map <Leader>t :CtrlPBuffer<CR>
   let g:ctrlp_map = '<C-t>'
   let g:ctrlp_working_path_mode = 0 " don’t manage working directory.
   let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v\c\.(git|svn)$|cgi/t/sandbox|cover_db',
-  \ 'file': '\v\c\.(swf|bak|png|gif|js|mov|ico|jpg|pdf|jrxml)$',
+  \ 'file': '\v\c\.(swf|bak|png|gif|mov|ico|jpg|pdf|jrxml)$',
   \ }
+
 Bundle 'Lokaltog/vim-powerline'
   let g:Powerline_symbols = 'fancy'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'mileszs/ack.vim'
-Bundle 'cakebaker/scss-syntax.vim'
-Bundle 'airblade/vim-gitgutter'
+
   let g:gitgutter_sign_column_always = 1
   highlight clear SignColumn
 
-" vim-scripts repos
-"Bundle 'L9'
-"Bundle 'FuzzyFinder'
-"  let g:fuf_coveragefile_exclude = '\c\.\(swf\|bak\|png\|gif\|js\|mov\|ico\|jpg\|pdf\|jrxml\)$\|cgi\/t\/sandbox\|\/cover_db\/'
-"  map <Leader>t :FufBuffer<CR>
-"  map <C-t> :FufCoverageFile<CR>
-
-" non github repos
-"Bundle 'git://git.wincent.com/command-t.git'
-" ...
-
 filetype plugin indent on     " required!
 
-""" vimrc resumes :-)
+""" vimrc resumes
 
 set autoindent
 set backspace=indent,eol,start
-set cindent " set smartindent
+set nowrap
+set number
+set ruler
+set scrolloff=5
 set cmdheight=2
 set cursorcolumn
 set cursorline
 set errorformat=\"../../%f\"\\,%*[^0-9]%l:\ %m
-set expandtab
 set hidden
 set hlsearch
 set ignorecase
 set incsearch
 set laststatus=2
 set list
-set listchars=tab:>-,trail:-
-set mouse=c
-set nowrap
-set number
-set ruler
-set scrolloff=5
+set listchars=tab:⇥⇥,trail:-
+set expandtab
 set shiftwidth=4
+set smarttab
+set cindent " set smartindent
 set showcmd
 set showmatch
-set smarttab
 set t_Co=256
 set tags=tags;/
 set virtualedit=block
+set mouse=n
+set ttymouse=xterm2
 set backupdir=~/tmp
+
 syntax on
 colorscheme tomorrow
 
