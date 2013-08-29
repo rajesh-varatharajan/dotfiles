@@ -23,6 +23,10 @@ Bundle 'mileszs/ack.vim'
 Bundle 'cakebaker/scss-syntax.vim'
 Bundle 'airblade/vim-gitgutter'
 
+Bundle 'vim-scripts/The-NERD-tree'
+  map <F3> :NERDTreeToggle<CR>
+  let NERDTreeWinPos = 'left'
+
 " YouCompeleteMe requires vim 7.3+
 " Bundle 'Valloric/YouCompleteMe'
 
@@ -74,9 +78,13 @@ set virtualedit=block
 set mouse=n
 set ttymouse=xterm2
 set backupdir=~/tmp
+set wildmenu
+set wildignore=*.exe,*.dll,*.o,*.so,*.pyc,*.back,*.jpg,*.jpeg,*.png,*.gif,*.pdf
+set wildmode=list:full
+set autochdir
 
 syntax on
-colorscheme tomorrow
+colorscheme colorfulnight
 
 
 " :help last-position-jump
