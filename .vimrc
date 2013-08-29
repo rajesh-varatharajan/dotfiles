@@ -69,7 +69,8 @@ set listchars=tab:⇥⇥,trail:-
 set expandtab
 set shiftwidth=4
 set smarttab
-set cindent " set smartindent
+set cindent
+"set smartindent
 set showcmd
 set showmatch
 set t_Co=256
