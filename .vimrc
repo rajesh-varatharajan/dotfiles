@@ -33,7 +33,7 @@ Bundle 'vim-scripts/The-NERD-tree'
 Bundle 'kien/ctrlp.vim'
   map <Leader>t :CtrlPBuffer<CR>
   let g:ctrlp_map = '<C-t>'
-  let g:ctrlp_working_path_mode = 0 " don’t manage working directory.
+  let g:ctrlp_working_path_mode = 0 " dont manage working directory.
   let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v\c\.(git|svn)$|cgi/t/sandbox|cover_db',
   \ 'file': '\v\c\.(swf|bak|png|gif|mov|ico|jpg|pdf|jrxml)$',
@@ -49,6 +49,7 @@ filetype plugin indent on     " required!
 
 """ vimrc resumes
 
+set shell=bash
 set autoindent
 set backspace=indent,eol,start
 set nowrap
