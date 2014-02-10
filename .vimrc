@@ -48,7 +48,6 @@ Bundle 'Lokaltog/vim-powerline'
 filetype plugin indent on     " required!
 
 """ vimrc resumes
-
 set shell=bash
 set autoindent
 set backspace=indent,eol,start
@@ -66,7 +65,7 @@ set ignorecase
 set incsearch
 set laststatus=2
 set list
-set listchars=tab:⇥⇥,trail:-
+set listchars=tab:>-,trail:-
 set expandtab
 set shiftwidth=4
 set smarttab
@@ -95,7 +94,6 @@ nnoremap <C-L> :noh<CR><C-L>
 inoremap jj <Esc>
 nnoremap <Leader>r :source ~/.vimrc<CR>
 nnoremap <Leader><Leader>r :e ~/.vimrc<CR>
-
 map <Leader>gs :Gstatus<CR>
 map <Leader>gc :Gcommit<CR>
 map <Leader>gm :Gcommit --amend<CR>
@@ -109,4 +107,11 @@ map <Leader>gg :Git
 
 nmap <F1> <Esc>
 imap <F1> <Esc>
+
+nnoremap <C-S-K> :m .-2<CR>==
+nnoremap <C-S-J> :m .+1<CR>==
+inoremap <C-S-J> <Esc>:m .+1<CR>==gi
+inoremap <C-S-K> <Esc>:m .-2<CR>==gi
+vnoremap <C-S-K> :m '<-2<CR>gv=gv
+vnoremap <C-S-J> :m '>+1<CR>gv=gv
 
