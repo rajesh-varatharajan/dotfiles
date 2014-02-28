@@ -21,10 +21,12 @@ Bundle 'c9s/perlomni.vim'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'mileszs/ack.vim'
 Bundle 'cakebaker/scss-syntax.vim'
-Bundle 'airblade/vim-gitgutter'
 
 Bundle 'majutsushi/tagbar'
   nmap <F4> :TagbarToggle<CR>
+
+Bundle 'airblade/vim-gitgutter'
+  let g:gitgutter_sign_column_always = 0
 
 Bundle 'vim-scripts/The-NERD-tree'
   map <F3> :NERDTreeToggle<CR>
@@ -34,18 +36,14 @@ Bundle 'vim-scripts/The-NERD-tree'
 " Bundle 'Valloric/YouCompleteMe'
 
 Bundle 'kien/ctrlp.vim'
-  map <Leader>t :CtrlPBuffer<CR>
-  let g:ctrlp_map = '<C-t>'
   let g:ctrlp_working_path_mode = 0 " dont manage working directory.
   let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v\c\.(git|svn)$|cgi/t/sandbox|cover_db',
-  \ 'file': '\v\c\.(swf|bak|png|gif|mov|ico|jpg|pdf|jrxml)$',
+  \ 'dir':  '\v\c\.(git|svn)$',
+  \ 'file': '\v\c\.(swf|bak|png|gif|mov|ico|jpg|pdf)$',
   \ }
 
 Bundle 'Lokaltog/vim-powerline'
   let g:Powerline_symbols = 'fancy'
-
-  let g:gitgutter_sign_column_always = 1
   highlight clear SignColumn
 
 filetype plugin indent on     " required!
