@@ -23,6 +23,9 @@ Bundle 'mileszs/ack.vim'
 Bundle 'cakebaker/scss-syntax.vim'
 Bundle 'airblade/vim-gitgutter'
 
+Bundle 'majutsushi/tagbar'
+  nmap <F4> :TagbarToggle<CR>
+
 Bundle 'vim-scripts/The-NERD-tree'
   map <F3> :NERDTreeToggle<CR>
   let NERDTreeWinPos = 'left'
