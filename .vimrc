@@ -17,10 +17,11 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 Bundle 'tpope/vim-fugitive'
-Bundle 'c9s/perlomni.vim'
+Bundle 'jeetsukumaran/vim-buffergator'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'mileszs/ack.vim'
-Bundle 'cakebaker/scss-syntax.vim'
+Bundle 'ddollar/nerdcommenter'
+Bundle 'ervandew/supertab'
 
 Bundle 'majutsushi/tagbar'
   nmap <F4> :TagbarToggle<CR>
@@ -45,6 +46,10 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'Lokaltog/vim-powerline'
   let g:Powerline_symbols = 'fancy'
   highlight clear SignColumn
+
+" lang specific modules
+Bundle 'c9s/perlomni.vim'
+Bundle 'cakebaker/scss-syntax.vim'
 
 filetype plugin indent on     " required!
 
