@@ -67,7 +67,7 @@ set cursorline
 set errorformat=\"../../%f\"\\,%*[^0-9]%l:\ %m
 set hidden
 set hlsearch
-set ignorecase
+set noignorecase
 set incsearch
 set laststatus=2
 set list
