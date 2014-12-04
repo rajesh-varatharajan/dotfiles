@@ -30,8 +30,9 @@ Bundle 'airblade/vim-gitgutter'
   let g:gitgutter_sign_column_always = 0
 
 Bundle 'vim-scripts/The-NERD-tree'
-  map <F3> :NERDTreeToggle<CR>
   let NERDTreeWinPos = 'left'
+  map <F3> :NERDTreeToggle<CR>
+  nnoremap % :NERDTreeFind<CR>
 
 " YouCompeleteMe requires vim 7.3+
 " Bundle 'Valloric/YouCompleteMe'
