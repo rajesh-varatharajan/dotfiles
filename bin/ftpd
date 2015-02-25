@@ -52,18 +52,28 @@ def get_logger():
 
 def config_logger(logger, quiet = False, verbose = False, filename = None, syslog = False):
     '''Configures the logger object with specified args'''
+
     if quiet:
-        verbose = False
         logger.setLevel(logging.ERROR)
     elif verbose:
         logger.setLevel(logging.DEBUG)
 
+    for handler in logger.handlers:
+        if quiet:
+            logger.removeHandler(handler)
+        else:
+            handler.setLevel( verbose and logging.DEBUG or logging.INFO )
+
     if filename:
-        handler = logging.handlers.FileHandler(filename)
+        handler = logging.FileHandler(filename)
+        handler.setLevel( verbose and logging.DEBUG or logging.INFO )
         logger.addHandler(handler)
+
     if syslog:
-        syslog_handler = logging.handlers.SyslogHandler()
+        handler = logging.handlers.SysLogHandler()
+        handler.setLevel( verbose and logging.DEBUG or logging.INFO )
         logger.addHandler(handler)
+    return logger
 
 def create_server(
         directory, user, password,
@@ -106,12 +116,14 @@ Options:
    -h, --help           show this help
    -q, --quiet          less output (overwrites verbose)
    -v, --verbose        more output
+   -l, --log            log to a file
    -d, --dir            root directory (default is .)
    -u, --user           username for auth
    -w, --pass           password for auth
    -a, --anonymous      enable anonymous access
    -b, --bind           bind to interface (default is 127.0.0.1)
    -p, --port           port to listen (default is 2121)
+   --syslog             log to syslog
    --anonymous-write    grant write permissions to anonymous
    --max-connections    limit maximum connections (default is 100)
 '''.format(pyftpdlib_version, sys.argv[0])
@@ -124,17 +136,19 @@ def main(args):
     try:
         opts, _ = getopt.getopt(
                 args,
-                'hqvd:u:w:ab:p:',
+                'hqvl:d:u:w:ab:p:',
                 [
                     'help',
                     'quiet',
                     'verbose',
+                    'log=',
                     'dir='
                     'user=',
                     'pass=',
                     'anonymous',
                     'bind=',
                     'port=',
+                    'syslog',
                     'anonymous-write',
                     'max-connections=',
                 ]
@@ -164,6 +178,8 @@ def main(args):
             verbose = True
         elif key in ('-q', '--quiet'):
             quiet = True
+        elif key in ('-l', '--log') and val:
+            log_filename = os.path.abspath(val)
         elif key in ('-b', '--bind') and val:
             bind = val.strip()
         elif key in ('-p', '--port') and val:
@@ -176,16 +192,21 @@ def main(args):
             anon = True
         elif key in ('-d', '--directory') and val:
             directory = val
+        elif key == '--syslog':
+            log_syslog = True
         elif key == '--max-connections' and val:
             max_cons = min(int(val), 1)
         elif key == '--anonymous-write':
             anon_write = True
 
+    if log_filename and not os.path.exists(os.path.dirname(log_filename)):
+        raise ValueError("invalid log file name. containing directory does not exist")
+
+    config_logger(get_logger(), quiet, verbose, log_filename, log_syslog)
+
     if not anon:
         while not password:
             password = getpass.getpass('Password for {0}: '.format(user))
-
-    config_logger(get_logger(), quiet, verbose)
 
     server = create_server(directory, user, password, anon, bind, port, anon_write, max_cons)
     server.serve_forever()
