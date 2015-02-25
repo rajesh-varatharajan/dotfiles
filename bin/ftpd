@@ -28,6 +28,8 @@ from __future__ import print_function
 
 import sys
 import os
+import logging
+import logging.handlers
 import getpass
 import getopt
 
@@ -43,6 +45,25 @@ from pyftpdlib.servers import ThreadedFTPServer, FTPServer
 
 __version__ = '0.0.1'
 pyftpdlib_version = getattr(pyftpdlib, '__ver__', '<unknown>')
+
+def get_logger():
+    '''Returns the logger that pyftpdlib uses'''
+    return logging.getLogger('pyftpdlib')
+
+def config_logger(logger, quiet = False, verbose = False, filename = None, syslog = False):
+    '''Configures the logger object with specified args'''
+    if quiet:
+        verbose = False
+        logger.setLevel(logging.ERROR)
+    elif verbose:
+        logger.setLevel(logging.DEBUG)
+
+    if filename:
+        handler = logging.handlers.FileHandler(filename)
+        logger.addHandler(handler)
+    if syslog:
+        syslog_handler = logging.handlers.SyslogHandler()
+        logger.addHandler(handler)
 
 def create_server(
         directory, user, password,
@@ -83,6 +104,8 @@ Usage:
 
 Options:
    -h, --help           show this help
+   -q, --quiet          less output (overwrites verbose)
+   -v, --verbose        more output
    -d, --dir            root directory (default is .)
    -u, --user           username for auth
    -w, --pass           password for auth
@@ -101,9 +124,11 @@ def main(args):
     try:
         opts, _ = getopt.getopt(
                 args,
-                'hd:u:w:ab:p:',
+                'hqvd:u:w:ab:p:',
                 [
                     'help',
+                    'quiet',
+                    'verbose',
                     'dir='
                     'user=',
                     'pass=',
@@ -126,11 +151,19 @@ def main(args):
     port = 2121
     anon_write = False
     max_cons = 100
+    verbose = False
+    quiet = False
+    log_filename = None
+    log_syslog = False
 
     for (key, val) in opts:
         if key in ('-h', '--help'):
             print(usage)
             return getattr(os, 'EX_OK', 0)
+        elif key in ('-v', '--verbose'):
+            verbose = True
+        elif key in ('-q', '--quiet'):
+            quiet = True
         elif key in ('-b', '--bind') and val:
             bind = val.strip()
         elif key in ('-p', '--port') and val:
@@ -151,6 +184,8 @@ def main(args):
     if not anon:
         while not password:
             password = getpass.getpass('Password for {0}: '.format(user))
+
+    config_logger(get_logger(), quiet, verbose)
 
     server = create_server(directory, user, password, anon, bind, port, anon_write, max_cons)
     server.serve_forever()
