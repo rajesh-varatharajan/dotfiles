@@ -43,72 +43,18 @@ from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import ThreadedFTPServer, FTPServer
 
-__version__ = '0.0.1'
 pyftpdlib_version = getattr(pyftpdlib, '__ver__', '<unknown>')
 
-def get_logger():
-    '''Returns the logger that pyftpdlib uses'''
-    return logging.getLogger('pyftpdlib')
+class FtpdApp(object):
+    __version__ = '0.1.0'
 
-def config_logger(logger, quiet = False, verbose = False, filename = None, syslog = False):
-    '''Configures the logger object with specified args'''
+    def __init__(self, opts, args=[]):
+        self.opts = self.normalize_opts(opts)
+        self.args = args
 
-    if quiet:
-        logger.setLevel(logging.ERROR)
-    elif verbose:
-        logger.setLevel(logging.DEBUG)
-
-    for handler in logger.handlers:
-        if quiet:
-            logger.removeHandler(handler)
-        else:
-            handler.setLevel( verbose and logging.DEBUG or logging.INFO )
-
-    if filename:
-        handler = logging.FileHandler(filename)
-        handler.setLevel( verbose and logging.DEBUG or logging.INFO )
-        logger.addHandler(handler)
-
-    if syslog:
-        handler = logging.handlers.SysLogHandler()
-        handler.setLevel( verbose and logging.DEBUG or logging.INFO )
-        logger.addHandler(handler)
-    return logger
-
-def create_server(
-        directory, user, password,
-        anon = False,
-        bind = '127.0.0.1', port = 21,
-        anon_write = False,
-        max_cons = 100,
-        server_class = ThreadedFTPServer
-    ):
-    '''Creates an FTP server configured with the specified args.
-
-    :returns: FTPServer
-    :raises: ValueError on missing user/password if anonymous access is disabled
-    '''
-    authorizer = DummyAuthorizer()
-
-    if anon:
-        authorizer.add_anonymous(directory, perm = anon_write and 'elradfmw' or 'elr')
-    else:
-        if not user:
-            raise ValueError('User is required')
-        if not password:
-            raise ValueError('Password is required')
-
-    if user and password:
-        authorizer.add_user(user, password, directory, perm='elradfmw')
-
-    handler = FTPHandler
-    handler.authorizer = authorizer
-
-    server = server_class((bind, port), handler)
-    server.max_cons = max_cons
-    return server
-
-usage = '''FTP server using pyftpdlib version {0}
+    @staticmethod
+    def get_usage():
+        return '''FTP server using pyftpdlib version {0}
 Usage:
 {1} [options]
 
@@ -129,6 +75,166 @@ Options:
    --async              use asynchronous IO server model
 '''.format(pyftpdlib_version, sys.argv[0])
 
+    @staticmethod
+    def get_short_opts():
+        return {
+            'h' : 'help',
+            'q' : 'quiet',
+            'v' : 'verbose',
+            'l:' : 'log',
+            'd:' : 'dir',
+            'u:' : 'user',
+            'w:' : 'password',
+            'a' : 'anonymous',
+            'b:' : 'bind',
+            'p:' : 'port'
+        }
+
+    @staticmethod
+    def get_long_opts():
+        return [
+            'help',
+            'quiet',
+            'verbose',
+            'log=',
+            'dir=',
+            'user=',
+            'password=',
+            'anonymous',
+            'bind=',
+            'port=',
+            'syslog',
+            'anonymous-write',
+            'max-connections=',
+            'async'
+        ]
+
+    def normalize_opts(self, opts):
+        opts = dict(opts)
+
+        short_opts = self.get_short_opts()
+        opts_mapping = dict()
+        for (key, val) in list(short_opts.items()):
+            if key.endswith(':'):
+                key = key[:-1]
+            opts_mapping[key] = val
+
+        normalized = dict()
+
+        # cleanup getopt helper chars
+        for (key, val) in list(opts.items()):
+            if key.startswith('--'):
+                key = key[2:]
+            elif key.startswith('-'):
+                key = key[1:]
+
+            if key[-1] in (':', '='):
+                key = key[:-1]
+            normalized[key] = val
+
+        # convert short opts to long opts
+        for key in normalized.keys():
+            long_opt = opts_mapping.get(key, None)
+            if long_opt:
+                if not opts.has_key(long_opt):
+                    normalized[long_opt] = normalized[key]
+
+        return normalized
+
+    def get_logger(self):
+        return logging.getLogger('pyftpdlib')
+
+    def config_logger(self, logger, quiet = False, verbose = False, filename = None, syslog = False):
+        if quiet:
+            logger.setLevel(logging.ERROR)
+        elif verbose:
+            logger.setLevel(logging.DEBUG)
+
+        for handler in logger.handlers:
+            if quiet:
+                logger.removeHandler(handler)
+            else:
+                handler.setLevel( verbose and logging.DEBUG or logging.INFO )
+
+        if filename:
+            handler = logging.FileHandler(filename)
+            handler.setLevel( verbose and logging.DEBUG or logging.INFO )
+            logger.addHandler(handler)
+
+        if syslog:
+            handler = logging.handlers.SysLogHandler()
+            handler.setLevel( verbose and logging.DEBUG or logging.INFO )
+            logger.addHandler(handler)
+        return logger
+
+    def create_server(
+            self,
+            directory, user, password,
+            anon = False,
+            bind = '127.0.0.1', port = 21,
+            anon_write = False,
+            max_cons = 100,
+            server_class = ThreadedFTPServer
+        ):
+        '''Creates an FTP server configured with the specified args.
+
+        :returns: FTPServer
+        :raises: ValueError on missing user/password if anonymous access is disabled
+        '''
+        authorizer = DummyAuthorizer()
+
+        if anon:
+            authorizer.add_anonymous(directory, perm = anon_write and 'elradfmw' or 'elr')
+        else:
+            if not user:
+                raise ValueError('User is required')
+            if not password:
+                raise ValueError('Password is required')
+
+        if user and password:
+            authorizer.add_user(user, password, directory, perm='elradfmw')
+
+        handler = FTPHandler
+        handler.authorizer = authorizer
+
+        server = server_class((bind, port), handler)
+        server.max_cons = max_cons
+        return server
+
+    def run(self):
+        opts = self.opts
+        if opts.has_key('help'):
+            print(self.get_usage())
+            return getattr(os, 'EX_OK', 0)
+
+        user = opts.get('user', getpass.getuser())
+        password = None
+        anon = opts.has_key('anonymous')
+        directory = opts.get('dir', os.getcwd())
+        bind = opts.get('bind', '127.0.0.1')
+        port = opts.get('port', 2121)
+        anon_write = opts.has_key('anonymous-write')
+        max_cons = opts.get('max-connections', 100)
+        verbose = opts.has_key('verbose')
+        quiet = opts.has_key('quiet')
+        log_filename = opts.get('log', None)
+        log_syslog = opts.has_key('syslog')
+        async = opts.has_key('async')
+
+        if log_filename and not os.path.exists(os.path.dirname(log_filename)):
+            raise ValueError("invalid log file name. containing directory does not exist")
+
+        self.config_logger(self.get_logger(), quiet, verbose, log_filename, log_syslog)
+
+        if not anon:
+            while not password:
+                password = getpass.getpass('Password for {0}: '.format(user))
+
+        server_class = async and FTPServer or ThreadedFTPServer
+        server = self.create_server(directory, user, password, anon, bind, port, anon_write, max_cons, server_class)
+        server.serve_forever()
+        return(getattr(os, 'EX_OK', 0))
+
 def main(args):
     '''Start an FTP server configured with the specified args.
 
@@ -137,91 +243,21 @@ def main(args):
     try:
         opts, _ = getopt.getopt(
                 args,
-                'hqvl:d:u:w:ab:p:',
-                [
-                    'help',
-                    'quiet',
-                    'verbose',
-                    'log=',
-                    'dir='
-                    'user=',
-                    'pass=',
-                    'anonymous',
-                    'bind=',
-                    'port=',
-                    'syslog',
-                    'anonymous-write',
-                    'max-connections=',
-                    'async'
-                ]
-                )
+                ''.join(FtpdApp.get_short_opts().keys()),
+                FtpdApp.get_long_opts()
+        )
     except getopt.GetoptError as exp:
         print(str(exp), file=sys.stderr)
         return getattr(os, 'EX_DATAERR', 65)
 
-    user = getpass.getuser()
-    password = None
-    anon = False
-    directory = os.getcwd()
-    bind = '127.0.0.1'
-    port = 2121
-    anon_write = False
-    max_cons = 100
-    verbose = False
-    quiet = False
-    log_filename = None
-    log_syslog = False
-    async = False
-
-    for (key, val) in opts:
-        if key in ('-h', '--help'):
-            print(usage)
-            return getattr(os, 'EX_OK', 0)
-        elif key in ('-v', '--verbose'):
-            verbose = True
-        elif key in ('-q', '--quiet'):
-            quiet = True
-        elif key in ('-l', '--log') and val:
-            log_filename = os.path.abspath(val)
-        elif key in ('-b', '--bind') and val:
-            bind = val.strip()
-        elif key in ('-p', '--port') and val:
-            port = int(val)
-        elif key in ('-u', '--user') and val:
-            user = val
-        elif key in ('-w', '--pass') and val:
-            password = val
-        elif key in ('-a', '--anonymous'):
-            anon = True
-        elif key in ('-d', '--directory') and val:
-            directory = val
-        elif key == '--syslog':
-            log_syslog = True
-        elif key == '--max-connections' and val:
-            max_cons = min(int(val), 1)
-        elif key == '--anonymous-write':
-            anon_write = True
-        elif key == '--async':
-            async = True
-
-    if log_filename and not os.path.exists(os.path.dirname(log_filename)):
-        raise ValueError("invalid log file name. containing directory does not exist")
-
-    config_logger(get_logger(), quiet, verbose, log_filename, log_syslog)
-
-    if not anon:
-        while not password:
-            password = getpass.getpass('Password for {0}: '.format(user))
-
-    server_class = async and FTPServer or ThreadedFTPServer
-    server = create_server(directory, user, password, anon, bind, port, anon_write, max_cons, server_class)
-    server.serve_forever()
-
-if __name__ == '__main__':
+    app = FtpdApp(opts)
     try:
-        sys.exit(main(sys.argv[1:]))
+        return app.run()
     except KeyboardInterrupt as exp:
-        sys.exit(getattr(os, 'EX_DATAERR', 65))
+        return(getattr(os, 'EX_DATAERR', 65))
     except ValueError as exp:
         print(str(exp), file = sys.stderr)
-        sys.exit(getattr(os, 'EX_DATAERR', 65))
+        return(getattr(os, 'EX_DATAERR', 65))
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv[1:]))
