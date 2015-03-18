@@ -121,4 +121,5 @@ inoremap <C-S-J> <Esc>:m .+1<CR>==gi
 inoremap <C-S-K> <Esc>:m .-2<CR>==gi
 vnoremap <C-S-K> :m '<-2<CR>gv=gv
 vnoremap <C-S-J> :m '>+1<CR>gv=gv
+vnoremap // y/<C-R>"<CR>
 
