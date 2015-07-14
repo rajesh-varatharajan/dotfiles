@@ -2,56 +2,63 @@
 set nocompatible               " be iMproved
 filetype off                   " required!
 
-set runtimepath+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-" Bundles here:
+" Plugins here:
 "
 " shortnames come from http://github.com
 " long names could include a git repo URL
 "
-" Run :BundleInstall! to install/update bundles
+" Run :PluginInstall! to install/update bundles
 "
 " let Vundle manage Vundle
 " required! 
-Bundle 'gmarik/vundle'
+Plugin 'VundleVim/Vundle.vim'
 
-Bundle 'tpope/vim-fugitive'
-Bundle 'jeetsukumaran/vim-buffergator'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'mileszs/ack.vim'
-Bundle 'ddollar/nerdcommenter'
-Bundle 'ervandew/supertab'
+Plugin 'tpope/vim-fugitive'
+Plugin 'jeetsukumaran/vim-buffergator'
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'mileszs/ack.vim'
+Plugin 'ddollar/nerdcommenter'
+"Plugin 'ervandew/supertab'
 
-Bundle 'majutsushi/tagbar'
+Plugin 'majutsushi/tagbar'
   nmap <F4> :TagbarToggle<CR>
 
-Bundle 'airblade/vim-gitgutter'
+Plugin 'airblade/vim-gitgutter'
   let g:gitgutter_sign_column_always = 0
 
-Bundle 'vim-scripts/The-NERD-tree'
+Plugin 'vim-scripts/The-NERD-tree'
   let NERDTreeWinPos = 'left'
   map <F3> :NERDTreeToggle<CR>
   nnoremap <Leader>ff :NERDTreeFind<CR>
 
 " YouCompeleteMe requires vim 7.3+
-" Bundle 'Valloric/YouCompleteMe'
+" Plugin 'Valloric/YouCompleteMe'
 
-Bundle 'kien/ctrlp.vim'
+Plugin 'kien/ctrlp.vim'
   let g:ctrlp_working_path_mode = 0 " dont manage working directory.
   let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v\c\.(git|svn)$',
   \ 'file': '\v\c\.(swf|bak|png|gif|mov|ico|jpg|pdf)$',
   \ }
 
-Bundle 'Lokaltog/vim-powerline'
+Plugin 'Lokaltog/vim-powerline'
   let g:Powerline_symbols = 'fancy'
   highlight clear SignColumn
 
-" lang specific modules
-Bundle 'c9s/perlomni.vim'
-Bundle 'cakebaker/scss-syntax.vim'
+Plugin 'joonty/vdebug'
 
+" lang specific modules
+Plugin 'ekalinin/Dockerfile.vim'
+"Plugin 'elixir-lang/vim-elixir'
+"Plugin 'hhvm/vim-hack'
+"Plugin 'c9s/perlomni.vim'
+"Plugin 'cakebaker/scss-syntax.vim'
+"Plugin 'alvan/vim-php-manual'
+
+call vundle#end()
 filetype plugin indent on     " required!
 
 """ vimrc resumes
