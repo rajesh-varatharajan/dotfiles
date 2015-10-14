@@ -48,15 +48,16 @@ Plugin 'Lokaltog/vim-powerline'
   let g:Powerline_symbols = 'fancy'
   highlight clear SignColumn
 
+Plugin 'tpope/vim-surround'
 Plugin 'joonty/vdebug'
 
 " lang specific modules
 Plugin 'ekalinin/Dockerfile.vim'
 "Plugin 'elixir-lang/vim-elixir'
 "Plugin 'hhvm/vim-hack'
+"Plugin 'alvan/vim-php-manual'
 "Plugin 'c9s/perlomni.vim'
 "Plugin 'cakebaker/scss-syntax.vim'
-"Plugin 'alvan/vim-php-manual'
 
 call vundle#end()
 filetype plugin indent on     " required!
@@ -96,6 +97,7 @@ set backupdir=~/tmp
 set wildmenu
 set wildignore=*.exe,*.dll,*.o,*.so,*.pyc,*.back,*.jpg,*.jpeg,*.png,*.gif,*.pdf
 set wildmode=list:full
+set colorcolumn=80
 
 syntax on
 colorscheme colorfulnight
@@ -129,4 +131,3 @@ inoremap <C-S-K> <Esc>:m .-2<CR>==gi
 vnoremap <C-S-K> :m '<-2<CR>gv=gv
 vnoremap <C-S-J> :m '>+1<CR>gv=gv
 vnoremap // y/<C-R>"<CR>
-

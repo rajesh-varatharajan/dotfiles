@@ -63,3 +63,4 @@ hi Pmenu guifg=#000000 guibg=#9CBBDE gui=bold
 hi PmenuSel guifg=#000000 guibg=#ffffff
 hi CursorColumn guifg=NONE guibg=#303030 gui=NONE ctermbg=236
 hi CursorLine guifg=NONE guibg=#000000 gui=none ctermbg=236 cterm=NONE
+hi ColorColumn guifg=NONE guibg=#303030 gui=NONE ctermbg=236
