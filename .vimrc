@@ -20,7 +20,7 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'jeetsukumaran/vim-buffergator'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'mileszs/ack.vim'
-Plugin 'ddollar/nerdcommenter'
+Plugin 'scrooloose/nerdcommenter'
 "Plugin 'ervandew/supertab'
 
 Plugin 'majutsushi/tagbar'
