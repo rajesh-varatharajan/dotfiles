@@ -65,7 +65,7 @@ Options:
    -l, --log            log to a file
    -d, --dir            root directory (default is .)
    -u, --user           username for auth
-   -w, --pass           password for auth
+   -w, --password       password for auth
    -a, --anonymous      enable anonymous access
    -b, --bind           bind to interface (default is 127.0.0.1)
    -p, --port           port to listen (default is 2121)
@@ -208,7 +208,7 @@ Options:
             return getattr(os, 'EX_OK', 0)
 
         user = opts.get('user', getpass.getuser())
-        password = None
+        password = opts.get('password')
         anon = opts.has_key('anonymous')
         directory = opts.get('dir', os.getcwd())
         bind = opts.get('bind', '127.0.0.1')
