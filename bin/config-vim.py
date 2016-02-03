@@ -57,8 +57,8 @@ def install_vim_plugins_with_vundle(target, ask):
 
 def main():
     home_path = os.path.expanduser('~')
-    target = sys.argv[1] if len(sys.argv) > 1 else os.path.join(home_path, '.vim')
-    return configure_vim(sys.argv[1]) and 1 or 0
+    target = sys.argv[1] if len(sys.argv) > 1 else home_path
+    return configure_vim(target) and 1 or 0
 
 if __name__ == '__main__':
     sys.exit(main())
