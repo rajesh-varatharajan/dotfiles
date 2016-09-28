@@ -62,6 +62,10 @@ Plugin 'ekalinin/Dockerfile.vim'
 call vundle#end()
 filetype plugin indent on     " required!
 
+"Use plug.vim to install additional plugins
+call plug#begin('~/.vim/plugged')
+call plug#end()
+
 """ vimrc resumes
 set shell=bash
 set autoindent
