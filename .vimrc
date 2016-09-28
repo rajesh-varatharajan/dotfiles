@@ -64,6 +64,13 @@ filetype plugin indent on     " required!
 
 "Use plug.vim to install additional plugins
 call plug#begin('~/.vim/plugged')
+
+" this assumes fzf is installed separately on ~/.apps/fzf
+" see https://github.com/junegunn/fzf
+Plug '~/.apps/fzf' | Plug 'junegunn/fzf.vim'
+  noremap <C-T> :Files<CR>
+  noremap <Leader>t :Buffers<CR>
+
 call plug#end()
 
 """ vimrc resumes
