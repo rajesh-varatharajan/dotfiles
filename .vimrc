@@ -17,11 +17,11 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'tpope/vim-fugitive'
-Plugin 'jeetsukumaran/vim-buffergator'
 Plugin 'Lokaltog/vim-easymotion'
-Plugin 'mileszs/ack.vim'
 Plugin 'scrooloose/nerdcommenter'
+"Plugin 'mileszs/ack.vim'
 "Plugin 'ervandew/supertab'
+"Plugin 'jeetsukumaran/vim-buffergator'
 
 Plugin 'majutsushi/tagbar'
   nmap <F4> :TagbarToggle<CR>
@@ -53,14 +53,25 @@ Plugin 'joonty/vdebug'
 
 " lang specific modules
 Plugin 'ekalinin/Dockerfile.vim'
+"Plugin 'rust-lang/rust.vim'
 "Plugin 'elixir-lang/vim-elixir'
 "Plugin 'hhvm/vim-hack'
 "Plugin 'alvan/vim-php-manual'
 "Plugin 'c9s/perlomni.vim'
-"Plugin 'cakebaker/scss-syntax.vim'
 
 call vundle#end()
 filetype plugin indent on     " required!
+
+"Use plug.vim to install additional plugins
+call plug#begin('~/.vim/plugged')
+
+" this assumes fzf is installed separately on ~/.apps/fzf
+" see https://github.com/junegunn/fzf
+Plug '~/.apps/fzf' | Plug 'junegunn/fzf.vim'
+  noremap <C-T> :Files<CR>
+  noremap <Leader>t :Buffers<CR>
+
+call plug#end()
 
 """ vimrc resumes
 set shell=bash
