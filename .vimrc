@@ -102,8 +102,8 @@ set showmatch
 set t_Co=256
 set tags=tags;/
 set virtualedit=block
-set mouse=n
-set ttymouse=xterm2
+"set mouse=n
+"set ttymouse=xterm2
 set backupdir=~/tmp
 set wildmenu
 set wildignore=*.exe,*.dll,*.o,*.so,*.pyc,*.back,*.jpg,*.jpeg,*.png,*.gif,*.pdf
